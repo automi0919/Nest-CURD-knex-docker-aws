@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+  postgres:
+    container_name: test
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      PGPASSWORD: password
+    ports:
+      - "5432:5432"
+    networks:
+        frontend:
+            ipv4_address: 190.17.0.1
+    restart: unless-stopped
+
+  web:
+    build: .
+    #depends_on:
+    # - postgres
+    #volumes:
+    # - "./app:/src/app"
+    ports:
+      - "3000:3000"
+        #networks:
+        #frontend:
+        #   ipv4_address: 172.20.0.5
+
+networks:
+  frontend:
+    ipam:
+      config:
+        - subnet: 190.17.0.0/24
